@@ -1,4 +1,5 @@
 import { useState } from "react";
+//import { Comment } from './Comment';
 import * as React from "react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Avatar from "@mui/joy/Avatar";
@@ -40,7 +41,38 @@ const Post = ({ post }) => {
   const likeModel = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [postLike, setPostLike] = useState();
+  
+  const [shareCount, setShareCount] = useState(0);
+  const[comments,setComments]=useState([])
+  const [likeStatus, setLikeStatus] = useState(null);
+  const [likes, setLikes] = useState(0);
 
+  const handleLike = () => {
+    if (likeStatus === 'like') {
+      setLikeStatus(null);
+      setLikes(likes - 1);
+    } else {
+      setLikeStatus('like');
+      setLikes(likes + 1);
+    }
+  };
+//continue
+  const handleDislike = () => {
+    if (likeStatus === 'dislike') {
+      setLikeStatus(null);
+      setLikes(likes + 1);
+    } else {
+      setLikeStatus('dislike');
+      setLikes(likes - 1);
+    }
+  };
+  const handleComment = (comment) => {
+    setComments([...comments,comment]);
+  };
+
+  const handleShare = () => {
+    setShareCount(shareCount + 1);
+  };
   return (
     <Card
       variant="outlined"
@@ -93,8 +125,8 @@ const Post = ({ post }) => {
       >
         <Box sx={{ width: 0, display: "flex", gap: 0.5 }}>
           <IconButton variant="plain" color="neutral" size="sm">
-            {/* <Button></Button> */}
-            <FavoriteBorder />
+            {/* <Button></Button> ////////////////*/}
+            <FavoriteBorder onClick={handleLike} />{likeStatus==='like'?'Liked':'like'&&likeStatus==='dislike'?'Disliked':'Dislike'&&likes===1?'like':'likes'}
             <Modal
               keepMounted
               open={open}
@@ -109,7 +141,7 @@ const Post = ({ post }) => {
                   component="h2"
                   textAlign={"center"}
                 >
-                  Likes
+                 Likes 
                   <hr />
                 </Typography>
                 {/* {posts.map((elem,ind)=> {
@@ -132,10 +164,12 @@ const Post = ({ post }) => {
             </Modal>
           </IconButton>
           <IconButton variant="plain" color="neutral" size="sm">
-            <ModeCommentOutlined />
+            {/* comment */}
+            <ModeCommentOutlined onClick={handleComment}/>
           </IconButton>
           <IconButton variant="plain" color="neutral" size="sm">
-            <SendOutlined />
+            {/* send */}
+            <SendOutlined onClick={handleShare}/>
           </IconButton>
         </Box>
         {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mx: 'auto' }}>
